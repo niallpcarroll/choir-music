@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choir Music Library</title>
+</head>
+<body>
+    <h1>Choir Music Library</h1>
+
+    {% for piece in music_pieces %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+            <h2>{{ piece.title }}</h2>
+            <p><em>{{ piece.composer }}</em></p>
+            
+            {% if piece.sheet_music %}
+                <p><a href="{{ piece.sheet_music.url }}" target="_blank">📄 Sheet Music</a></p>
+            {% endif %}
+
+            {% if piece.recordings.all %}
+                <h3>Recordings:</h3>
+                <ul>
+                    {% for rec in piece.recordings.all %}
+                        <li>
+                            {{ rec.part }}
+                            {% if rec.recording_file %}
+                                <audio controls>
+                                    <source src="{{ rec.recording_file.url }}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            {% elif rec.recording_url %}
+                                <p><a href="{{ rec.recording_url }}" target="_blank">🎵 Listen on YouTube</a></p>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No music pieces found.</p>
+    {% endfor %}
+</body>
+</html>
