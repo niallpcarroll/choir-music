@@ -25,7 +25,17 @@ SECRET_KEY = "django-insecure-!n=0x-9(2@sx9@i%^g9f#$sz8z%-t$%_)=s2)j^ox2&ghy@e#(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://crispy-disco-q77g66pj5xr72qqq-8000.app.github.dev',
+    'localhost',
+    '127.0.0.1',
+    ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://crispy-disco-q77g66pj5xr72qqq-8000.app.github.dev",
+    "https://localhost:8000",
+]
+
 
 
 # Application definition
@@ -37,13 +47,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "music",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
