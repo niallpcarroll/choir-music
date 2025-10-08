@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os 
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,16 +25,18 @@ SECRET_KEY = "django-insecure-!n=0x-9(2@sx9@i%^g9f#$sz8z%-t$%_)=s2)j^ox2&ghy@e#(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'https://crispy-disco-q77g66pj5xr72qqq-8000.app.github.dev',
-    'localhost',
-    '127.0.0.1',
-    ]
+DEBUG = True
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://crispy-disco-q77g66pj5xr72qqq-8000.app.github.dev",
-    "https://localhost:8000",
-]
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+    CSRF_TRUSTED_ORIGINS = [
+        'http://localhost:8000',
+        'http://127.0.0.1:8000',
+        f"https://{os.environ.get('CODESPACE_NAME', '')}-8000.app.github.dev"
+    ]
+else:
+    ALLOWED_HOSTS = ['your-production-domain.com']
+    CSRF_TRUSTED_ORIGINS = ['https://your-production-domain.com']
 
 
 
