@@ -1,18 +1,25 @@
 {
   "files.exclude": {
-      "**/.DS_Store": true,
-      "**/.git": true,
-      "**/.github": true,
-      "**/.gitp*": true,
-      "**/.hg": true,
-      "**/.svn": true,
-      "**/.vscode": true,
-      "**/core.Microsoft*": true,
-      "**/core.mongo*": true,
-      "**/core.python*": true,
-      "**/CVS": true
-   },
-   "files.autoSave": "afterDelay",
-   "workbench.colorTheme": "Visual Studio Dark",
-   "terminal.integrated.gpuAcceleration": "canvas",
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.github": true,
+    "**/.gitp*": true,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/.vscode": true,
+    "**/core.Microsoft*": true,
+    "**/core.mongo*": true,
+    "**/core.python*": true,
+    "**/CVS": true
+  },
+  "files.autoSave": "afterDelay",
+  "workbench.colorTheme": "Visual Studio Dark",
+  "terminal.integrated.gpuAcceleration": "auto",
+
+  // ✅ Add the following three entries below:
+  "python.formatting.provider": "black",
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  }
 }

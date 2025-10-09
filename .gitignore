@@ -8,3 +8,18 @@ node_modules/
 .github/
 cloudinary_python.txt
 venv/
+# Database
+db.sqlite3
+
+# Django media files
+media/
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# Logs
+*.log
+
+# Optional: migrations if you don't want to commit them
+# **/migrations/
