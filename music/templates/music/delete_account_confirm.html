@@ -1,0 +1,19 @@
+{% extends "music/base.html" %}
+{% block title %}Delete Account | Choir Music{% endblock %}
+
+{% block content %}
+<div class="container my-5 flex-grow-1 d-flex justify-content-center">
+    <div class="card p-4 shadow-sm" style="max-width: 500px; text-align: center;">
+        <h3 class="mb-4" style="color:#ffd700;">Confirm Account Deletion</h3>
+        <p class="mb-4">Are you sure you want to delete your account? This action cannot be undone.</p>
+
+        <form method="post" action="{% url 'delete_account' %}">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <button type="submit" class="btn btn-warning">Yes, Delete My Account</button>
+                <a href="{% url 'landing_page' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

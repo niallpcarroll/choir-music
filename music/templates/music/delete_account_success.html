@@ -1,0 +1,12 @@
+{% extends "music/base.html" %}
+{% block title %}Account Deleted | Choir Music{% endblock %}
+
+{% block content %}
+<div class="container my-5 flex-grow-1 d-flex justify-content-center">
+    <div class="card p-4 shadow-sm" style="max-width: 500px; text-align: center;">
+        <h3 class="mb-4" style="color:#ffd700;">Account Deleted Successfully</h3>
+        <p class="mb-4">Your account has been deleted.</p>
+        <a href="{% url 'login' %}" class="btn btn-warning">Back to Login</a>
+    </div>
+</div>
+{% endblock %}

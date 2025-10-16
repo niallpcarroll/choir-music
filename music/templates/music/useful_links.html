@@ -1,0 +1,91 @@
+{% extends "music/base.html" %}
+{% load static %}
+
+{% block title %}Other Useful Links{% endblock %}
+
+{% block content %}
+<div class="container my-5 flex-grow-1">
+
+    <h1 class="mb-4 text-center">Other Useful Links</h1>
+
+    <!-- Gregorian Chant -->
+    <section class="chant-div mb-5">
+        <h2>Gregorian Chant</h2>
+        <p>Here are some helpful resources for Gregorian chant:</p>
+        <ul>
+            <li>
+                <h3>Gregorian Chant Hymns</h3>
+                <p><a href="https://gregorian-chant-hymns.com/" target="_blank">Gregorian Chant Hymns</a> has an extensive collection of sheet music and recordings of popular plainchant for the liturgy.</p>
+            </li>
+            <li>
+                <h3>Reading & Singing Gregorian Chant</h3>
+                <p><a href="https://www.ccwatershed.org/Gregorian/" target="_blank">Corpus Christi Watershed</a> offers eleven lessons for learning how to read and sing Gregorian chant.</p>
+            </li>
+            <li>
+                <h3>Pronunciation of Ecclesiastical Latin</h3>
+                <p><a href="{% static 'Additional_Docs/Ecclesiastical_Latin_Pronunciation.pdf' %}" target="_blank">Here</a> is a document outlining correct Ecclesiastical Latin pronunciation as standardised by Pope Pius X.</p>
+            </li>
+            <li>
+                <h3>Jubilate Deo</h3>
+                <p>Pope Paul VI sent a copy of <a href="{% static 'sheet_music/Jubilate Deo 1dot02.pdf' %}" target="_blank"><i>Jubilate Deo</i></a> to every bishop in April 1974, containing the minimum plainchant repertoire the faithful should know.</p>
+            </li>
+            <li>
+                <h3>Square Note: Gregorian Chant App</h3>
+                <p>A free app containing notation for the most common chants of the Mass: Ordinaries, Propers, and occasional hymns. Tapping a note plays the melody, helping singers to learn the chants.</p>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Traditional Latin Mass -->
+    <section class="latin-mass-div mb-5">
+        <h2>The Traditional Latin Mass</h2>
+        <p>Some useful information about music in the Latin Mass:</p>
+        <ul>
+            <li>
+                <h3>Order of Sung Mass</h3>
+                <p><a href="{% static 'Additional_Docs/Order of Sung Mass.pdf' %}" target="_blank">This document</a> lists everything sung in a traditional <i>Missa Cantata</i>.</p>
+            </li>
+        </ul>
+    </section>
+
+    <!-- English Plainchant -->
+    <section class="english-div mb-5">
+        <h2>English Plainchant</h2>
+        <ul>
+            <li>
+                <h3>Simple English Propers</h3>
+                <p>The <a href="https://www.churchmusicassociation.org/sep/" target="_blank"><i>Church Music Association of America</i></a> provides sheet music and recordings of the <i>Simple English Propers</i> for the liturgical year.</p>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Church Documents -->
+    <section class="documents-div mb-5">
+        <h2>Church Documents on Sacred Music</h2>
+        <p>Here are the most relevant Church documents on sacred music:</p>
+        <ul>
+            <li>
+                <h3>Tra le Sollecitudini</h3>
+                <p>Issued by Pope St Pius X in 1903, <a href="https://adoremus.org/1903/11/tra-le-sollecitudini/" target="_blank"><i>Tra le Sollecitudini</i></a> helped revive Gregorian chant and explains sacred music.</p>
+            </li>
+            <li>
+                <h3>Musicae Sacrae Disciplina</h3>
+                <p>The 1955 encyclical of Pope Pius XII, <a href="https://www.vatican.va/content/pius-xii/en/encyclicals/documents/hf_p-xii_enc_25121955_musicae-sacrae.html" target="_blank"><i>Musicae sacrae disciplina</i></a>, reaffirms the duty to preserve Latin plainchant and sacred music.</p>
+            </li>
+            <li>
+                <h3>De Musica Sacra</h3>
+                <p>The Sacred Congregation of Rites issued <a href="https://adoremus.org/1958/09/instruction-on-sacred-music/" target="_blank"><i>De musica sacra</i></a> in 1958, addressing amplification, automatic instruments, and pre-recorded music.</p>
+            </li>
+            <li>
+                <h3>Sacrosanctum Concilium</h3>
+                <p><a href="https://www.vatican.va/archive/hist_councils/ii_vatican_council/documents/vat-ii_const_19631204_sacrosanctum-concilium_en.html" target="_blank"><i>Sacrosanctum concilium</i></a> was the first Second Vatican Council document on liturgy; Chapter VI focuses on sacred music.</p>
+            </li>
+            <li>
+                <h3>Musicam Sacram</h3>
+                <p>Issued in 1967, <a href="https://www.vatican.va/archive/hist_councils/ii_vatican_council/documents/vat-ii_instr_19670305_musicam-sacram_en.html" target="_blank"><i>Musicam sacram</i></a> addresses vernacular use, Gregorian chant, instruments, and text hierarchy in the liturgy.</p>
+            </li>
+        </ul>
+    </section>
+
+</div>
+{% endblock %}

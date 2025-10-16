@@ -1,0 +1,33 @@
+{% extends "music/base.html" %}
+{% block title %}Contact | Choir Music{% endblock %}
+
+{% block content %}
+<div class="container my-5 flex-grow-1 d-flex justify-content-center">
+    <div class="card p-4 shadow-sm" style="max-width: 600px;">
+        <h1 class="mb-4 text-center" style="color:#ffd700;">Contact Us</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_name" class="form-label">Your Name</label>
+                {{ form.name }}
+            </div>
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Your Email</label>
+                {{ form.email }}
+            </div>
+            <div class="mb-3">
+                <label for="id_message" class="form-label">Message</label>
+                {{ form.message }}
+            </div>
+            <button type="submit" class="btn btn-warning w-100 mt-3">Send Message</button>
+        </form>
+        <div class="text-center mt-4">
+            {% if user.is_authenticated %}
+                <a href="{% url 'landing_page' %}">← Back to Music Library</a>
+            {% else %}
+                <a href="{% url 'login' %}">← Back to Login</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,320 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}Choir Music{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    /* Body & General */
+    body {
+      background-color: #0b3d91;
+      color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Containers */
+    .container {
+      max-width: 900px;
+    }
+
+    /* Navbar brand */
+    .navbar-brand {
+      font-size: 1.75rem;
+      font-weight: bold;
+    }
+
+    /* Cards */
+    .card {
+      border-radius: 1rem;
+      background-color: #1f4e99;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card-title, .card-subtitle {
+      color: #f8f9fa;
+    }
+
+    /* Recording Circles */
+    .recording-circle {
+      width: 30px;
+      height: 30px;
+      background-color: #ffd700;
+      color: #0b3d91;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 0.4rem;
+      margin-bottom: 0.4rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+    .recording-circle.choir {
+      background-color: #4a90e2;
+      color: white;
+      font-weight: bold;
+    }
+    .d-flex-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    /* Top bar (login/logout) */
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+    .top-bar a {
+      color: #ffd700;
+      text-decoration: none;
+      margin-left: 1rem;
+    }
+    .top-bar a:hover {
+      text-decoration: underline;
+    }
+
+    /* Navbar */
+    .navbar-custom {
+      background-color: #1f4e99;
+      transition: background-color 0.3s, backdrop-filter 0.3s;
+    }
+    .navbar-custom.scrolled {
+      background-color: rgba(31, 78, 153, 0.85);
+      backdrop-filter: blur(6px);
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav-link,
+    .navbar-custom .dropdown-item {
+      color: #ffd700;
+    }
+    .navbar-custom .nav-link:hover,
+    .navbar-custom .dropdown-item:hover {
+      color: #ffffff;
+    }
+
+    /* Sticky navbar only on large screens */
+    @media (min-width: 992px) {
+      .navbar-custom {
+        position: sticky;
+        top: 0;
+        z-index: 1030;
+      }
+      .navbar .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .navbar .navbar-brand {
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .navbar .navbar-toggler {
+        position: absolute;
+        left: 1rem;
+      }
+    }
+
+    /* Navbar toggler (burger icon) */
+    .navbar-toggler {
+      border-color: #ffd700;
+    }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='gold' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+
+    /* Small screen burger menu animation */
+    @media (max-width: 991.98px) {
+      .navbar-collapse.d-lg-none {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      }
+      .navbar-collapse.d-lg-none.show {
+        max-height: 500px;
+        opacity: 1;
+      }
+      .navbar-collapse.d-lg-none .nav-item {
+        background-color: #1f4e99;
+        margin: 0.25rem 0;
+        border-radius: 0.5rem;
+      }
+      .navbar-collapse.d-lg-none .nav-link {
+        padding: 0.75rem 1rem;
+      }
+      .navbar-collapse.d-lg-none .nav-link:hover {
+        background-color: #335ea3;
+      }
+    }
+
+    /* Search bar */
+    .search-bar {
+      margin-bottom: 1rem;
+    }
+
+    /* Footer */
+    footer {
+      font-size: 0.9rem;
+    }
+
+    .footer-custom {
+      background-color: rgba(31, 78, 153, 0.85);
+      backdrop-filter: blur(6px);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      transition: background-color 0.3s, backdrop-filter 0.3s;
+    }
+
+
+    /* Buttons for alphabet filter */
+    .btn-outline-light {
+      color: #f8f9fa;
+      border-color: #f8f9fa;
+    }
+
+    /* Section styling */
+    section {
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    section:last-of-type {
+      border-bottom: none;
+    }
+    section h2 {
+      font-size: 1.75rem;
+      margin-bottom: 0.75rem;
+      color: #ffd700;
+      text-align: left;
+    }
+    section h3 {
+      font-size: 1.25rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.25rem;
+      color: #ffffff;
+    }
+    section p {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    section ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    section ul li {
+      margin-bottom: 0.75rem;
+    }
+    section a {
+      color: #ffd700;
+      text-decoration: underline;
+    }
+    section a:hover {
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    input, textarea {
+      background-color: #324a68;
+      color: #f8f9fa;
+      border: none;
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+      width: 100%;
+    }
+    input:focus, textarea:focus {
+      background-color: #4566a0;
+      outline: none;
+      box-shadow: none;
+    }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-custom mb-4">
+    <div class="container position-relative">
+      <!-- Centered brand -->
+      <a class="navbar-brand text-center" href="{% url 'landing_page' %}">Choir Music</a>
+
+      <!-- Burger icon -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks"
+        aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar links -->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarLinks">
+        <!-- Large screens -->
+        <ul class="navbar-nav d-none d-lg-flex">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Resources
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{% url 'useful_links' %}">Other Useful Links</a></li>
+              <li><a class="dropdown-item" href="https://www.ccwatershed.org/goupil/" target="_blank">Latin Mass Propers</a></li>
+              <li><a class="dropdown-item" href="https://www.ccwatershed.org/kyriale/" target="_blank">Mass Ordinaries</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <!-- Small screens -->
+        <ul class="navbar-nav d-lg-none flex-column mt-2">
+          <li class="nav-item"><a class="nav-link" href="{% url 'useful_links' %}">Other Useful Links</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://www.ccwatershed.org/goupil/" target="_blank">Latin Mass Propers</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://www.ccwatershed.org/kyriale/" target="_blank">Mass Ordinaries</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login/Logout Links -->
+  <div class="container top-bar">
+    {% if user.is_authenticated %}
+      <span>Welcome, {{ user.username }}</span>
+      <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+  </div>
+
+  <!-- Main Content -->
+  <div class="container flex-grow-1 my-3">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer-custom text-center text-light py-3 mt-auto">
+  &copy; {{ current_year }} Niall Carroll
+</footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Subtle navbar fade effect on scroll
+    document.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar-custom');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

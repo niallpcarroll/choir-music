@@ -1,0 +1,159 @@
+{% extends "music/base.html" %}
+{% load static %}
+{% block title %}{{ piece.title }} - Choir Music{% endblock %}
+
+{% block extra_head %}
+<style>
+  body {
+    background-color: #1f4e99;
+
+    /* Decorative background image with blue overlay */
+    background-image:
+      linear-gradient(rgba(31, 78, 153, 0.8), rgba(31, 78, 153, 0.8)),
+      url("{% static 'images/background-decor.jpg' %}");
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 90% auto; /* shows full image, keeps blue border */
+    background-attachment: fixed;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    padding: 0 2rem;
+  }
+
+  .card {
+    border-radius: 1rem;
+    background-color: #1f4e99;
+    transition: transform 0.2s;
+    padding: 1rem;
+  }
+
+  .card:hover { transform: translateY(-5px); }
+
+  .card-title, .card-subtitle, h4, h5 {
+    color: #f8f9fa;
+  }
+
+  .btn-soft {
+    background-color: #4a6fb3;
+    color: #f8f9fa;
+    font-weight: bold;
+  }
+
+  .btn-soft:hover {
+    background-color: #6687c7;
+    color: #f8f9fa;
+  }
+
+  .recording-badge {
+    font-size: 0.9rem;
+    background-color: #ffd700;
+    color: #0b3d91;
+    font-weight: bold;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 576px) {
+    .container { padding: 0 1rem; }
+    .card { padding: 1rem !important; }
+    .btn-soft { font-size: 1rem; padding: 0.6rem 1rem; }
+    .recording-badge { font-size: 1rem; padding: 0.3rem 0.6rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5 flex-grow-1">
+
+  <!-- Back button -->
+  <div class="mb-3">
+    <a href="{% url 'landing_page' %}" class="btn btn-soft">← Back to Music List</a>
+  </div>
+
+  <h1 class="mb-4 text-center">{{ piece.title }}</h1>
+  {% if piece.composer %}
+    <h4 class="text-center mb-4">Composer: {{ piece.composer }}</h4>
+  {% endif %}
+
+  <!-- Full-piece recordings -->
+  {% if full_recordings %}
+    <div class="card mb-4 shadow-sm">
+      {% if piece.sheet_music %}
+        <a href="{{ piece.sheet_music.url }}" target="_blank" class="btn btn-soft mb-3 w-100">
+          View Sheet Music (PDF)
+        </a>
+      {% endif %}
+      <div class="mt-3">
+        <h5 class="mb-3"></h5>
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+          {% for recording in full_recordings %}
+            <div class="col">
+              <div class="card h-100 shadow-sm p-2">
+                {% if recording.part %}
+                  <span class="badge recording-badge mb-2">{{ recording.part }}</span>
+                {% endif %}
+                {% if recording.recording_file %}
+                  <audio controls preload="auto" class="w-100">
+                    <source src="{{ recording.recording_file.url }}" type="audio/mpeg" />
+                    Your browser does not support the audio element.
+                  </audio>
+                {% elif recording.recording_url %}
+                  <a href="{{ recording.recording_url }}" target="_blank" class="btn btn-soft w-100 mt-2">Listen</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Recordings grouped by movement -->
+  {% if movements %}
+    {% for movement in movements %}
+      <div class="card mb-4 shadow-sm">
+        <h5 class="mb-3 mt-2">{{ movement.title }}</h5>
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+          {% for recording in movement.recordings.all %}
+            <div class="col">
+              <div class="card h-100 shadow-sm p-2">
+                {% if recording.part %}
+                  <span class="badge recording-badge mb-2">{{ recording.part }}</span>
+                {% endif %}
+                {% if recording.recording_file %}
+                  <audio controls preload="auto" class="w-100">
+                    <source src="{{ recording.recording_file.url }}" type="audio/mpeg" />
+                    Your browser does not support the audio element.
+                  </audio>
+                {% elif recording.recording_url %}
+                  <a href="{{ recording.recording_url }}" target="_blank" class="btn btn-soft w-100 mt-2">Listen</a>
+                {% endif %}
+                {% if recording.pdf_file %}
+                  <a href="{{ recording.pdf_file.url }}" target="_blank" class="btn btn-soft w-100 mt-2">PDF</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Pause other tracks when one plays
+  document.addEventListener("play", function(e) {
+    const audios = document.getElementsByTagName("audio");
+    for (let i = 0; i < audios.length; i++) {
+      if (audios[i] !== e.target) { audios[i].pause(); }
+    }
+  }, true);
+</script>
+{% endblock %}

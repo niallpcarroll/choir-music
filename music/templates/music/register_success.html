@@ -1,0 +1,13 @@
+{% extends "music/base.html" %}
+{% block title %}Registration Successful | Choir Music{% endblock %}
+
+{% block content %}
+<div class="container my-5 flex-grow-1 d-flex justify-content-center">
+    <div class="card p-4 shadow-lg" style="max-width: 500px; width: 100%; text-align: center; background-color: #1f4e99; color: #f8f9fa;">
+        <h1 class="mb-3">Registration Successful!</h1>
+        <p>Thank you, <strong>{{ username }}</strong>, for registering.</p>
+        <p>Your account is pending admin approval. Once approved, you will be able to log in.</p>
+        <a href="{% url 'login' %}" class="btn btn-warning mt-3 w-100">Back to Login</a>
+    </div>
+</div>
+{% endblock %}

@@ -9,36 +9,54 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
 import os
 from pathlib import Path
 import sys
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+LOGIN_URL = "/login/"
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!n=0x-9(2@sx9@i%^g9f#$sz8z%-t$%_)=s2)j^ox2&ghy@e#("
+# --- SECRET KEY ---
+# Use environment variable in production
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-!n=0x-9(2@sx9@i%^g9f#$sz8z%-t$%_)=s2)j^ox2&ghy@e#(",
+)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# --- DEBUG ---
+# Set via environment variable, default True for local development
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-# Dynamic ALLOWED_HOSTS and CSRF trusted origins for Codespaces
+# --- ALLOWED HOSTS & CSRF ---
+RENDER_DOMAIN = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+
 if DEBUG:
-    ALLOWED_HOSTS = ["*"]
-    CSRF_TRUSTED_ORIGINS = [
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-    ]
-    # Include Codespace URL if detected
+    # Local development
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+    CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000"]
+
+    # Codespaces support (optional)
     codespace_name = os.environ.get("CODESPACE_NAME")
     if codespace_name:
         CSRF_TRUSTED_ORIGINS.append(f"https://{codespace_name}-8000.app.github.dev")
 
 else:
-    ALLOWED_HOSTS = ["your-production-domain.com"]
-    CSRF_TRUSTED_ORIGINS = ["https://your-production-domain.com"]
+    # Production (Render)
+    if RENDER_DOMAIN:
+        ALLOWED_HOSTS = [RENDER_DOMAIN]
+        CSRF_TRUSTED_ORIGINS = [f"https://{RENDER_DOMAIN}"]
+    else:
+        # If no RENDER_DOMAIN, allow localhost for safe local testing
+        ALLOWED_HOSTS = ["choirmusic.onrender.com", "127.0.0.1", "localhost"]
+        CSRF_TRUSTED_ORIGINS = [
+            "https://choirmusic.onrender.com",
+            "http://127.0.0.1:8000",
+        ]
 
-# Application definition
+
+# --- Applications ---
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -59,9 +77,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# Temporary fix: disable CSRF middleware in Codespaces development
+# Disable CSRF in Codespaces
 if "runserver" in sys.argv and os.environ.get("CODESPACE_NAME"):
-    MIDDLEWARE = [m for m in MIDDLEWARE if m != "django.middleware.csrf.CsrfViewMiddleware"]
+    MIDDLEWARE = [
+        m for m in MIDDLEWARE if m != "django.middleware.csrf.CsrfViewMiddleware"
+    ]
 
 ROOT_URLCONF = "choir_site.urls"
 
@@ -82,7 +102,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "choir_site.wsgi.application"
 
-# Database
+# --- DATABASE ---
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -90,23 +110,40 @@ DATABASES = {
     }
 }
 
-# Password validation
+# --- PASSWORD VALIDATORS ---
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+# --- INTERNATIONALIZATION ---
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "static/"
+# --- STATIC FILES ---
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Media files
+# --- MEDIA FILES ---
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = BASE_DIR / "media"
+
+# --- ADMIN & EMAIL ---
+ADMINS = [("Niall", "niallpcarroll@gmail.com")]
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "niallpcarroll@gmail.com"
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# --- DEFAULT AUTO FIELD ---
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

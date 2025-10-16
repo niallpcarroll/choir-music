@@ -1,0 +1,174 @@
+<!-- if (-not (Test-Path .\venv\Scripts\Activate.ps1)) { py -m venv venv } ; Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass ; .\venv\Scripts\Activate -->
+{% extends "music/base.html" %}
+{% load static %}
+{% block title %}Choir Music{% endblock %}
+
+{% block extra_head %}
+<style>
+  body {
+    background-color: #1f4e99;
+
+    /* Decorative image overlay across full width */
+    background-image: 
+      linear-gradient(rgba(31, 78, 153, 0.8), rgba(31, 78, 153, 0.85)),
+      url("{% static 'images/background-decor.jpg' %}");
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 90% auto;
+    background-attachment: fixed;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Card styling */
+  .card {
+    border-radius: 1rem;
+    background-color: #1f4e99;
+    transition: transform 0.2s;
+    padding: 1rem;
+  }
+  .card:hover { transform: translateY(-5px); }
+  .card-title, .card-subtitle { color: #f8f9fa; }
+
+  /* Recording circles */
+  .recording-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ffd700;
+    color: #0b3d91;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .recording-circle.choir {
+    background-color: #4a90e2;
+    color: white;
+    font-weight: bold;
+  }
+
+  /* Alphabet filter buttons */
+  .alphabet-btn {
+    background-color: #1f4e99; 
+    color: #ffffff;
+    border: 2px solid #ffd700;  
+    font-weight: bold;
+    margin: 0.2rem;
+    min-width: 35px;
+    text-align: center;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .alphabet-btn:hover,
+  .alphabet-btn:focus {
+    background-color: #335ea3;
+    color: #ffffff;
+    text-decoration: none;
+  }
+  .alphabet-btn.selected {
+    background-color: #ffd700;
+    color: #1f4e99;
+    border: 2px solid #ffffff;
+  }
+
+  /* 'All' button styling */
+  .alphabet-btn.all-btn {
+    background-color: #555b6e;  /* grey for contrast */
+    color: #ffffff;
+    border: 2px solid #ffd700;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .alphabet-btn.all-btn:hover,
+  .alphabet-btn.all-btn:focus {
+    background-color: #6c7389;  /* lighter grey on hover/focus */
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+
+  @media (max-width: 576px) {
+    .container { padding: 0 1rem; }
+    .recording-circle { width: 25px; height: 25px; font-size: 0.8rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5 flex-grow-1">
+
+  <!-- Contact Us Button -->
+  <div class="text-center contact-btn mb-4">
+    <a href="{% url 'contact' %}" class="btn btn-warning">Contact Us</a>
+  </div>
+
+  <!-- Alphabet Filter -->
+  <div class="mb-3 text-center">
+    {% for l in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+      <a href="{% url 'landing_page' %}?letter={{ l }}{% if query %}&q={{ query }}{% endif %}" 
+         class="btn btn-sm alphabet-btn {% if letter == l %}selected{% endif %}">
+         {{ l }}
+      </a>
+    {% endfor %}
+    <a href="{% url 'landing_page' %}{% if query %}?q={{ query }}{% endif %}" 
+       class="btn btn-sm alphabet-btn all-btn">
+       All
+    </a>
+  </div>
+
+  <!-- Search Bar -->
+  <form method="get" action="{% url 'landing_page' %}" class="search-bar mb-3">
+    <div class="input-group">
+      <input type="text" name="q" value="{{ query }}" class="form-control"
+             placeholder="Search by title or composer..." />
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  </form>
+
+  {% if query %}
+    <div class="mb-3">
+      <a href="{% url 'landing_page' %}" class="btn btn-secondary btn-sm">Return to Full List</a>
+    </div>
+  {% endif %}
+
+  <!-- Music Pieces -->
+  {% if pieces %}
+    {% for piece in pieces %}
+      <a href="{% url 'piece_detail' piece.id %}" class="card-link text-decoration-none">
+        <div class="card mb-3 shadow-sm p-3">
+          <h4 class="card-title mb-1">{{ piece.title|safe }}</h4>
+          {% if piece.composer %}
+            <h6 class="card-subtitle mb-2">Composer: {{ piece.composer|safe }}</h6>
+          {% endif %}
+
+          <!-- Recording Parts Circles -->
+          <div class="d-flex-wrap">
+            {% for part in piece.unique_parts %}
+              {% if part == "Ch" %}
+                <div class="recording-circle choir">{{ part }}</div>
+              {% else %}
+                <div class="recording-circle">{{ part }}</div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+        </div>
+      </a>
+    {% endfor %}
+  {% else %}
+    <p class="text-center text-light">No music pieces available.</p>
+  {% endif %}
+
+  {% if user.is_authenticated %}
+    <div class="text-center mb-3 mt-3">
+      <a href="{% url 'delete_account_confirm' %}" class="text-light text-decoration-underline small">
+        Delete My Account
+      </a>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
