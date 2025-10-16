@@ -1,25 +1,33 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+
+# --- Virtual environment ---
+venv/
+
+# --- Logs ---
+*.log
+
+# --- VS Code settings ---
+.vscode/
+*.code-workspace
+
+# --- Node modules ---
+node_modules/
+
+# --- Optional: specific core files ---
 core.Microsoft*
 core.mongo*
 core.python*
 env.py
-__pycache__/
-*.py[cod]
-node_modules/
-.github/
-cloudinary_python.txt
-venv/
-# Database
-db.sqlite3
 
-# Django media files
-media/
+# --- Database ---
+db.sqlite3   # you can keep this ignored; your media files will still be preserved
 
-# VS Code settings
-.vscode/
-*.code-workspace
-
-# Logs
-*.log
-
-# Optional: migrations if you don't want to commit them
+# --- Django migrations ---
+# Commented out so migrations are tracked
 # **/migrations/
+
+# --- MEDIA FILES ---
+# Do NOT ignore media/, so that uploaded PDFs/MP3s get pushed to GitHub
+# media/
